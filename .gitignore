@@ -1,0 +1,29 @@
+# Environment Variables & API Secrets (DO NOT COMMIT SENSITIVE KEYS)
+.env
+*.env
+!.env.example
+
+# Python Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+
+# Virtual Environments
+venv/
+env/
+.venv/
+
+# Local Cache & Logs
+database/registrations_cache.json
+*.log
+
+# Editor & OS Metadata
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

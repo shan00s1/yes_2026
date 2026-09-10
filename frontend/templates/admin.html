@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard & Attendee Management • YES 2026 | VTU VRIF Belagavi</title>
+  <meta name="description" content="Centralized administration portal for Young Entrepreneurs Summit - YES 2026. Manage registrations, filter categories, track check-ins, and export records.">
+
+  <link rel="stylesheet" href="/static/css/style.css?v=2026.8">
+  <link rel="stylesheet" href="/static/css/admin.css?v=2026.8">
+  <link rel="stylesheet" href="/static/css/forms.css?v=2026.8">
+  <link rel="stylesheet" href="/static/css/badge.css?v=2026.8">
+</head>
+<body data-lan-ip="{{ lan_ip }}" data-is-https="{{ 'true' if is_https else 'false' }}">
+
+  <!-- Navigation Bar -->
+  <header>
+    <nav class="navbar">
+      <div class="container">
+        <a href="/" class="brand-logo">
+          <img src="/static/img/VRIF%20LOGO.png" alt="VTU VRIF Belagavi Logo" class="nav-vrif-logo">
+          <div class="brand-divider"></div>
+          <img src="/static/img/Young%20Entrepreneur%20SuMmit%20(9).png" alt="YES 2026 Mascot" class="nav-yes-mascot">
+          <span class="brand-text">YES <span class="gradient-accent">2026</span></span>
+        </a>
+
+        <div class="nav-actions">
+          <a href="/" class="nav-link-subtle">Website</a>
+          <a href="/register" class="nav-link-subtle">Registration</a>
+          <a href="/checkin" class="btn btn-outline-cyan btn-sm" style="padding: 5px 12px; font-size: 12px;" title="Open Authorised Kiosk Scanner">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px; margin-right: 4px;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            Kiosk Scanner
+          </a>
+          <a href="/admin/logout" class="nav-link-subtle" style="color: var(--danger);">
+            Log Out
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="admin-page">
+    <div class="container">
+
+      <!-- Header & Action Title -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 28px; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <span class="section-tag">Centralized Management</span>
+          <h1 style="font-size: 30px;">Summit Registrations & Operations</h1>
+          <p style="color: var(--text-muted); font-size: 14px;">
+            Real-time analytics, check-in audit logs, attendee modification, and exports.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+          <div id="db-status-pill" title="Live Database Engine Status" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; background: #ffffff; border: 1px solid var(--border); border-radius: 9999px; font-size: 12px; font-weight: 600; color: var(--text-main); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+            <span id="db-status-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+            <span id="db-status-text">Database: Initializing...</span>
+          </div>
+
+          <a href="/checkin" class="btn btn-primary btn-sm" id="btn-admin-kiosk" title="Open Authorised Venue Scanner & ID Desk" style="background: #0284c7; border-color: #0284c7; color: white;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            Open Kiosk Scanner Desk
+          </a>
+
+          <button class="btn btn-secondary btn-sm" id="btn-admin-clear" title="Clear all registrations for a clean slate" style="color: var(--danger); border-color: rgba(239, 68, 68, 0.3);">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            Clear All Records
+          </button>
+          
+          <button class="btn btn-outline-cyan btn-sm" id="btn-admin-broadcast-emails" title="Broadcast official QR pass and badge emails to all attendees via Gmail SMTP">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Broadcast Emails to All
+          </button>
+
+          <a href="/api/admin/export/csv" class="btn btn-secondary btn-sm" id="btn-admin-export" download>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export CSV
+          </a>
+
+          <button class="btn btn-secondary btn-sm" id="btn-admin-refresh">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+            Refresh
+          </button>
+        </div>
+      </div>
+        
+        <!-- KPI METRIC CARDS -->
+        <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="kpi-lbl">Total Registrations</div>
+          <div class="kpi-val" id="kpi-total">0</div>
+          <div class="kpi-sub">
+            <span>Centralized Database</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon" style="color: var(--success);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="kpi-lbl">Checked In</div>
+          <div class="kpi-val" style="color: var(--success);" id="kpi-checked">0</div>
+          <div class="kpi-sub">
+            <span>Verified at Venue Kiosks</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon" style="color: var(--secondary);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="kpi-lbl">Pending Check-in</div>
+          <div class="kpi-val" style="color: var(--secondary);" id="kpi-pending">0</div>
+          <div class="kpi-sub">
+            <span>Expected Arrivals</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon" style="color: var(--primary);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          </div>
+          <div class="kpi-lbl">Live Attendance Rate</div>
+          <div class="kpi-val" style="color: var(--primary);" id="kpi-rate">0%</div>
+          <div class="kpi-sub">
+            <span>Turnout Percentage</span>
+          </div>
+        </div>
+
+        <!-- Category Distribution Breakdown Card -->
+        <div class="kpi-card" style="grid-column: span 2;">
+          <div class="kpi-lbl">Category Breakdown</div>
+          <div class="cat-breakdown-bar">
+            <div class="cat-seg-fac" id="seg-fac" style="width: 15%;"></div>
+            <div class="cat-seg-del" id="seg-del" style="width: 35%;"></div>
+            <div class="cat-seg-par" id="seg-par" style="width: 50%;"></div>
+          </div>
+          <div class="cat-legend">
+            <div><span class="cat-dot" style="background: var(--faculty-purple);"></span> Faculty: <strong id="kpi-fac-val">0</strong></div>
+            <div><span class="cat-dot" style="background: var(--secondary);"></span> Delegates: <strong id="kpi-dels-val">0</strong></div>
+            <div><span class="cat-dot" style="background: var(--primary);"></span> Participants: <strong id="kpi-pars-val">0</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILTER & SEARCH CONTROLS TOOLBAR -->
+      <div class="toolbar-card">
+        <div class="filter-group">
+          
+          <!-- Search input -->
+          <div class="search-input-wrap">
+            <span class="search-icon-pos">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </span>
+            <input type="text" class="form-control" id="admin-search-input" placeholder="Search by name, ID, email, company...">
+          </div>
+
+          <!-- Category filter -->
+          <select class="form-control" id="admin-cat-filter" style="width: 170px;">
+            <option value="all">All Categories</option>
+            <option value="participant">Participants</option>
+            <option value="delegate">Delegates</option>
+            <option value="faculty">Faculty</option>
+            <option value="vip">Legacy VIPs</option>
+          </select>
+
+          <!-- Status filter -->
+          <select class="form-control" id="admin-status-filter" style="width: 170px;">
+            <option value="all">All Statuses</option>
+            <option value="CHECKED_IN">Checked In</option>
+            <option value="REGISTERED">Registered (Pending)</option>
+          </select>
+
+        </div>
+
+        <div class="toolbar-actions">
+          <span id="table-count-label" style="font-size: 13px; color: var(--text-dim);">Loading...</span>
+        </div>
+      </div>
+
+      <!-- REGISTRATIONS TABLE -->
+      <div class="table-card">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Reg ID</th>
+                <th>Attendee & Contact</th>
+                <th>Category</th>
+                <th>Organization & Role</th>
+                <th>Status</th>
+                <th>Check-in Details</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="registrations-tbody">
+              <!-- Dynamically rendered -->
+            </tbody>
+          </table>
+        </div>
+      </div> <!-- /table-card -->
+    </div> <!-- /container -->
+  </main> <!-- /admin-page -->
+
+  <!-- EDIT ATTENDEE MODAL -->
+  <div class="modal-overlay" id="edit-modal">
+    <div class="modal-card" style="max-width: 600px; text-align: left;">
+      <button class="modal-close-btn" onclick="closeEditModal()">&times;</button>
+      <h2 style="font-size: 22px; margin-bottom: 4px;">Edit Registration Details</h2>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+        Update attendee records stored in the centralized database.
+      </p>
+
+      <form id="edit-attendee-form">
+        <input type="hidden" id="edit-reg-id">
+
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label>Full Legal Name</label>
+            <input type="text" class="form-control" id="edit-full-name" required>
+          </div>
+
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" class="form-control" id="edit-email" required>
+          </div>
+
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" class="form-control" id="edit-phone" required>
+          </div>
+
+          <div class="form-group">
+            <label>Organization / Company</label>
+            <input type="text" class="form-control" id="edit-org" required>
+          </div>
+
+          <div class="form-group">
+            <label>Designation / Role</label>
+            <input type="text" class="form-control" id="edit-role">
+          </div>
+
+          <div class="form-group full-width">
+            <label>Track / Sector</label>
+            <input type="text" class="form-control" id="edit-track">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
+          <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- OUTBOX EMAIL VIEWER MODAL -->
+  <div class="modal-overlay" id="email-viewer-modal">
+    <div class="modal-card" style="max-width: 680px; padding: 24px; text-align: left;">
+      <button class="modal-close-btn" onclick="closeEmailModal()">&times;</button>
+      <h3 style="font-size: 18px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Dispatched Confirmation Email Preview
+      </h3>
+
+      <div class="email-preview-box">
+        <iframe id="email-viewer-iframe" style="width: 100%; height: 480px; border: none;"></iframe>
+      </div>
+
+      <div style="text-align: right;">
+        <button class="btn btn-secondary btn-sm" onclick="closeEmailModal()">Close Preview</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/badge.js?v=2026.12"></script>
+  <script src="/static/js/admin.js?v=2026.12"></script>
+</body>
+</html>

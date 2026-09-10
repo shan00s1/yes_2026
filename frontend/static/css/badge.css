@@ -1,0 +1,362 @@
+/* ===================================================================
+   MODAL OVERLAY FOR BADGE VIEWING & PRINTING
+   =================================================================== */
+.modal-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(15, 23, 42, 0.65) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  display: none !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 9999 !important;
+  padding: 20px !important;
+  box-sizing: border-box !important;
+}
+
+.modal-overlay.active {
+  display: flex !important;
+}
+
+.modal-close-btn {
+  position: absolute !important;
+  top: 14px !important;
+  right: 16px !important;
+  background: transparent !important;
+  border: none !important;
+  color: #64748b !important;
+  font-size: 26px !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  border-radius: 6px !important;
+  width: 34px !important;
+  height: 34px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.15s ease !important;
+}
+
+.modal-close-btn:hover {
+  color: #0f172a !important;
+  background: #f1f5f9 !important;
+}
+
+/* Modal Container for Generated Badge */
+.badge-modal-content {
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  max-width: 480px !important;
+  width: 100% !important;
+  max-height: 92vh !important;
+  overflow-y: auto !important;
+  padding: 30px 24px !important;
+  position: relative !important;
+  text-align: center !important;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25) !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+  animation: badgeModalPop 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+@keyframes badgeModalPop {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Badge Shell (Standard 3.5" x 5.2" proportion) */
+.lanyard-badge {
+  width: 340px;
+  min-height: 500px;
+  margin: 0 auto 24px;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 2px solid #cbd5e1;
+  transition: var(--transition);
+  text-align: center;
+  background: #ffffff;
+  color: #0f172a;
+}
+
+/* Lanyard Punch Hole */
+.badge-punch-hole {
+  width: 55px;
+  height: 12px;
+  background: #e2e8f0;
+  border-radius: 12px;
+  margin: 14px auto 6px;
+  border: 1.5px solid #94a3b8;
+}
+
+/* Top Event Bar */
+.badge-top-bar {
+  padding: 10px 16px 6px;
+}
+
+.badge-event-title {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #0f172a;
+}
+
+.badge-event-subtitle {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #64748b;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+/* Badge Category Stripe */
+.badge-category-stripe {
+  padding: 8px 16px;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 6px 0 14px;
+  color: #ffffff;
+}
+
+/* Attendee Details Body */
+.badge-body {
+  padding: 0 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge-avatar-ring {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  padding: 3px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge-avatar-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.badge-name {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 4px;
+  color: #0f172a;
+}
+
+.badge-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.badge-org {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+/* QR Code Display on Badge */
+.badge-qr-container {
+  background: #ffffff;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1.5px solid #cbd5e1;
+  display: inline-block;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.badge-qr-container img, .badge-qr-container canvas {
+  width: 120px;
+  height: 120px;
+  display: block;
+}
+
+.badge-reg-code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+/* Badge Footer / Venue Details */
+.badge-bottom-bar {
+  padding: 10px 16px;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  font-weight: 700;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ===================================================================
+   1. FACULTY / ACADEMIC TEMPLATE (ROYAL VIOLET & INDIGO)
+   =================================================================== */
+.badge-faculty,
+.badge-vip {
+  border-color: #7c3aed;
+}
+
+.badge-faculty .badge-category-stripe,
+.badge-vip .badge-category-stripe {
+  background: linear-gradient(90deg, #6d28d9, #7c3aed);
+  color: #ffffff;
+}
+
+.badge-faculty .badge-avatar-ring,
+.badge-vip .badge-avatar-ring {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed);
+}
+
+.badge-faculty .badge-title,
+.badge-vip .badge-title {
+  color: #7c3aed;
+}
+
+.badge-faculty .badge-reg-code,
+.badge-vip .badge-reg-code {
+  color: #7c3aed;
+}
+
+/* ===================================================================
+   2. DELEGATE TEMPLATE (CORPORATE NAVY & TECH BLUE)
+   =================================================================== */
+.badge-delegate {
+  border-color: #0284c7;
+}
+
+.badge-delegate .badge-category-stripe {
+  background: linear-gradient(90deg, #0369a1, #0284c7);
+  color: #ffffff;
+}
+
+.badge-delegate .badge-avatar-ring {
+  background: linear-gradient(135deg, #0369a1, #0284c7);
+}
+
+.badge-delegate .badge-title {
+  color: #0284c7;
+}
+
+.badge-delegate .badge-reg-code {
+  color: #0284c7;
+}
+
+/* ===================================================================
+   3. PARTICIPANT TEMPLATE (SUNRISE ORANGE)
+   =================================================================== */
+.badge-participant {
+  border-color: #ea580c;
+}
+
+.badge-participant .badge-category-stripe {
+  background: linear-gradient(90deg, #c2410c, #ea580c);
+  color: #ffffff;
+}
+
+.badge-participant .badge-avatar-ring {
+  background: linear-gradient(135deg, #c2410c, #ea580c);
+}
+
+.badge-participant .badge-title {
+  color: #ea580c;
+}
+
+.badge-participant .badge-reg-code {
+  color: #ea580c;
+}
+
+/* ===================================================================
+   PRINT STYLESHEET (@media print)
+   =================================================================== */
+@media print {
+  html, body {
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  body > *:not(#badge-modal) {
+    display: none !important;
+  }
+
+  #badge-modal, .modal-overlay {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    background: transparent !important;
+    padding: 0.3in 0 !important;
+    margin: 0 !important;
+  }
+
+  .badge-modal-content {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .modal-close-btn, .badge-actions-bar, .ticket-actions {
+    display: none !important;
+  }
+
+  .lanyard-badge {
+    position: relative !important;
+    width: 3.5in !important;
+    height: 5.2in !important;
+    margin: 0 auto !important;
+    border-radius: 16px !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

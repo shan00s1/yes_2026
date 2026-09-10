@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - YES 2026 | VTU VRIF Belagavi</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; background-color: var(--bg-dark);">
+
+  <div style="max-width: 420px; width: 100%; background: #ffffff; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 40px 32px; box-shadow: var(--shadow-card); text-align: center;">
+    
+    <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 16px;">
+      <img src="/static/img/VRIF%20LOGO.png" alt="VTU VRIF Belagavi" style="height: 48px; width: auto; object-fit: contain;">
+      <div style="width: 1px; height: 32px; background: #cbd5e1;"></div>
+      <img src="/static/img/Young%20Entrepreneur%20SuMmit%20(9).png" alt="YES 2026 Mascot" style="height: 48px; width: auto; object-fit: contain;">
+    </div>
+    <h1 style="font-size: 24px; margin-bottom: 4px; color: var(--text-main);">YES <span class="gradient-accent">2026</span></h1>
+    <div style="font-size: 11px; color: var(--secondary); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">VTU VRIF Belagavi</div>
+    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">
+      Executive Administration Console
+    </p>
+
+    {% if error %}
+    <div style="background: #fef2f2; border: 1px solid #fca5a5; color: #b91c1c; font-size: 13px; padding: 10px 14px; border-radius: var(--radius-sm); margin-bottom: 20px; text-align: left; display: flex; align-items: center; gap: 8px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+      <span>{{ error }}</span>
+    </div>
+    {% endif %}
+
+    <form method="POST" action="/admin" style="text-align: left;">
+      <div style="margin-bottom: 18px;">
+        <label style="font-size: 13px; font-weight: 700; color: #334155; display: block; margin-bottom: 6px;">
+          Admin Username
+        </label>
+        <input type="text" name="username" class="form-control" placeholder="admin" value="admin" required autofocus>
+      </div>
+
+      <div style="margin-bottom: 24px;">
+        <label style="font-size: 13px; font-weight: 700; color: #334155; display: block; margin-bottom: 6px;">
+          Password
+        </label>
+        <input type="password" name="password" class="form-control" placeholder="••••••••••••" value="nexus2026admin" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-bottom: 16px;">
+        Authenticate & Enter Dashboard
+      </button>
+
+      <div style="text-align: center;">
+        <a href="/" style="font-size: 13px; color: var(--text-dim); text-decoration: none;">&larr; Return to Public Website</a>
+      </div>
+    </form>
+
+    <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-subtle); font-size: 11px; color: var(--text-dim);">
+      Default Credentials: <code>admin</code> / <code>nexus2026admin</code>
+    </div>
+  </div>
+
+</body>
+</html>

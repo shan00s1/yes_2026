@@ -1,0 +1,424 @@
+/* ===================================================================
+   VENUE CAMERA QR SCANNER & CHECK-IN KIOSK STYLES (LIGHT THEME)
+   =================================================================== */
+
+.scanner-page {
+  padding: 110px 0 60px;
+  min-height: 100vh;
+}
+
+.kiosk-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 32px;
+  align-items: start;
+}
+
+/* Scanner Top Kiosk Bar */
+.kiosk-header-bar {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 20px 28px;
+  margin-bottom: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  box-shadow: var(--shadow-card);
+}
+
+.station-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(2, 132, 199, 0.08);
+  border: 1px solid rgba(2, 132, 199, 0.25);
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--secondary);
+}
+
+.kiosk-stats-row {
+  display: flex;
+  gap: 28px;
+}
+
+.kiosk-stat {
+  text-align: center;
+}
+
+.kiosk-stat .num {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.kiosk-stat .lbl {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  font-weight: 700;
+}
+
+/* Viewfinder Viewport */
+.camera-card {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.camera-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#qr-video-element {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Scanning Reticle & Laser Beam */
+.scanner-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.target-frame {
+  width: 260px;
+  height: 260px;
+  position: relative;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 18px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.target-frame.scan-detected {
+  border-color: #22c55e !important;
+  box-shadow: 0 0 35px rgba(34, 197, 94, 0.7) !important;
+}
+
+.target-frame.scan-detected .target-corner {
+  border-color: #22c55e !important;
+}
+
+.target-corner {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: #38bdf8;
+  border-style: solid;
+}
+
+.target-corner.tl { top: -2px; left: -2px; border-width: 4px 0 0 4px; border-top-left-radius: 18px; }
+.target-corner.tr { top: -2px; right: -2px; border-width: 4px 4px 0 0; border-top-right-radius: 18px; }
+.target-corner.bl { bottom: -2px; left: -2px; border-width: 0 0 4px 4px; border-bottom-left-radius: 18px; }
+.target-corner.br { bottom: -2px; right: -2px; border-width: 0 4px 4px 0; border-bottom-right-radius: 18px; }
+
+.laser-beam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #ea580c, #38bdf8, transparent);
+  box-shadow: 0 0 12px #ea580c, 0 0 20px #38bdf8;
+  animation: laserScan 2.5s ease-in-out infinite alternate;
+}
+
+.camera-controls {
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  border-top: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Manual ID Input Box */
+.manual-input-box {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+/* Result & Status Feedback Cards */
+.scan-result-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 1. SUCCESS CARD */
+.feedback-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  transition: var(--transition);
+}
+
+.feedback-card.state-idle {
+  border-color: var(--border-subtle);
+  text-align: center;
+  color: var(--text-dim);
+  padding: 50px 30px;
+}
+
+.feedback-card.state-success {
+  border: 2px solid var(--success);
+  background: #f0fdf4;
+  box-shadow: 0 8px 25px rgba(22, 163, 74, 0.12);
+  animation: pulseGreenGlow 0.5s ease;
+}
+
+/* 2. DUPLICATE CHECK-IN DETECTED CARD */
+.feedback-card.state-duplicate {
+  border: 2px solid var(--danger);
+  background: #fef2f2;
+  box-shadow: 0 8px 25px rgba(220, 38, 38, 0.12);
+  animation: shakeAlert 0.4s ease;
+}
+
+/* 3. NOT FOUND CARD */
+.feedback-card.state-notfound {
+  border: 2px solid var(--warning);
+  background: #fffbeb;
+  box-shadow: 0 8px 25px rgba(217, 119, 6, 0.12);
+}
+
+/* Alert Header Badges */
+.alert-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.banner-success {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+
+.banner-duplicate {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+}
+
+.banner-notfound {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+/* Scanned Attendee Card */
+.scanned-profile-card {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border-subtle);
+  margin-bottom: 20px;
+}
+
+.scanned-avatar {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 800;
+  border: 2px solid var(--border-subtle);
+  color: var(--secondary);
+  flex-shrink: 0;
+}
+
+.scanned-info h3 {
+  font-size: 19px;
+  margin-bottom: 4px;
+  color: var(--text-main);
+  font-weight: 800;
+}
+
+.scanned-info .org {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.scanned-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.meta-box {
+  background: #f8fafc;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+}
+
+.meta-box .lbl {
+  color: var(--text-dim);
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.meta-box .val {
+  font-weight: 800;
+  color: var(--text-main);
+  font-family: var(--font-mono);
+}
+
+/* Recent Check-ins Ticker */
+.recent-checkins-card {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+}
+
+.recent-checkins-card h4 {
+  font-size: 15px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text-main);
+  font-weight: 800;
+}
+
+.recent-stream-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.recent-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: #f8fafc;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--text-main);
+}
+
+/* Animations */
+@keyframes laserScan {
+  0% { top: 10%; }
+  100% { top: 85%; }
+}
+
+@keyframes pulseGreenGlow {
+  0% { transform: scale(0.98); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shakeAlert {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* Live Camera Status Pill & Animations */
+.cam-status-pill {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 15;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.cam-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d97706;
+  box-shadow: 0 0 8px #d97706;
+  display: inline-block;
+  animation: pulseDot 1.5s infinite ease-in-out;
+}
+
+.cam-dot.active {
+  background: #16a34a;
+  box-shadow: 0 0 8px #16a34a;
+}
+
+.cam-dot.error {
+  background: #dc2626;
+  box-shadow: 0 0 8px #dc2626;
+}
+
+.cam-pulse-ring {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid rgba(2, 132, 199, 0.2);
+  border-top-color: var(--primary);
+  border-right-color: var(--secondary);
+  animation: spin 1s linear infinite;
+  margin-bottom: 14px;
+}
+
+@media (max-width: 900px) {
+  .kiosk-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Official Registration Portal • YES 2026 | VTU VRIF Belagavi</title>
+  <meta name="description" content="Register for Young Entrepreneurs Summit (YES 2026) organized by VTU VRIF Belagavi. Dedicated pathways for Innovators, Corporate Delegates, and Faculty & Academic Mentors with instant QR pass issuance.">
+
+  <link rel="stylesheet" href="/static/css/style.css?v=2026.6">
+  <link rel="stylesheet" href="/static/css/forms.css?v=2026.6">
+  <link rel="stylesheet" href="/static/css/badge.css?v=2026.6">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header>
+    <nav class="navbar">
+      <div class="container">
+        <a href="/" class="brand-logo">
+          <img src="/static/img/VRIF%20LOGO.png" alt="VTU VRIF Belagavi Logo" class="nav-vrif-logo">
+          <div class="brand-divider"></div>
+          <img src="/static/img/Young%20Entrepreneur%20SuMmit%20(9).png" alt="YES 2026 Mascot" class="nav-yes-mascot">
+          <span class="brand-text">YES <span class="gradient-accent">2026</span></span>
+        </a>
+
+        <div class="nav-actions">
+          <a href="/" class="nav-link-subtle">Home</a>
+          <a href="/admin" class="nav-link-subtle">Admin</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="reg-page-wrapper">
+    <div class="container" style="max-width: 1040px;">
+      
+      <!-- Official Ecosystem Patrons Banner -->
+      <div style="display: flex; align-items: center; justify-content: center; gap: 18px; flex-wrap: wrap; margin-bottom: 24px; padding: 8px 18px; background: white; border-radius: var(--radius-full); border: 1px solid var(--border-subtle); max-width: 580px; margin-left: auto; margin-right: auto; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+        <img src="/static/img/VRIF%20LOGO.png" alt="VRIF" style="height: 26px; object-fit: contain;">
+        <span style="color: #cbd5e1;">|</span>
+        <img src="/static/img/ITBT%20KA.png" alt="Govt of Karnataka IT & BT" style="height: 28px; object-fit: contain;">
+        <span style="color: #cbd5e1;">|</span>
+        <img src="/static/img/K-tech.png" alt="K-tech" style="height: 20px; object-fit: contain;">
+        <span style="color: #cbd5e1;">|</span>
+        <img src="/static/img/Startup%20Karnataka_Logo.....png" alt="Startup Karnataka" style="height: 18px; object-fit: contain;">
+        <span style="color: #cbd5e1;">|</span>
+        <img src="/static/img/Early_Founders_Logo-removebg-preview.png" alt="Early Founders" style="height: 20px; object-fit: contain;">
+      </div>
+
+      <!-- MAIN WIZARD CONTAINER (MATCHING REFERENCE DESIGN) -->
+      <div class="reg-wizard-card">
+        
+        <!-- Header Banner (Vibrant Orange Gradient with Ticket Icon) -->
+        <div class="reg-hero-banner">
+          <h1>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>
+            Register for Tickets
+          </h1>
+          <p>YES 2026 • Young Entrepreneurs Summit | VTU VRIF Belagavi • All Passes 100% Free</p>
+        </div>
+
+        <div class="reg-wizard-body">
+          
+          <!-- 3-STEP PROGRESS STEPPER (MATCHING REFERENCE DESIGN) -->
+          <div class="stepper-container" id="reg-stepper">
+            <!-- Step 1: Information Entry -->
+            <div class="step-node active" id="step-node-1">
+              <div class="step-circle" id="step-circle-1">1</div>
+              <div class="step-label" id="step-label-1">Attendee Information</div>
+            </div>
+            <div class="step-connector" id="step-conn-1"></div>
+
+            <!-- Step 2: Review & Preview -->
+            <div class="step-node" id="step-node-2">
+              <div class="step-circle" id="step-circle-2">2</div>
+              <div class="step-label" id="step-label-2">Review & Preview</div>
+            </div>
+            <div class="step-connector" id="step-conn-2"></div>
+
+            <!-- Step 3: Registration Confirmation -->
+            <div class="step-node" id="step-node-3">
+              <div class="step-circle" id="step-circle-3">3</div>
+              <div class="step-label" id="step-label-3">Registration Confirmation</div>
+            </div>
+          </div>
+
+          <!-- =======================================================
+               STEP 1: ATTENDEE INFORMATION FORM
+               ======================================================= -->
+          <div id="step-1-view">
+            <form id="registration-form" novalidate>
+              <div class="reg-layout">
+                
+                <!-- Left Column: Card-Based Form Sections -->
+                <div class="form-sections-column">
+                  
+                  <!-- CARD 1: REGISTRATION INFORMATION -->
+                  <div class="form-section-card" id="section-card-reg-info">
+                    <div class="section-card-header">
+                      <span class="section-card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                      </span>
+                      <span class="section-card-title">Registration Information</span>
+                    </div>
+
+                    <!-- Category Pathway Tabs -->
+                    <div class="category-switcher" id="category-switcher" style="margin-bottom: 16px;">
+                      <!-- 1. Participant Tab -->
+                      <div class="cat-tab active-participant" data-category="participant" id="tab-cat-participant">
+                        <span class="cat-icon">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-2.05 9-1.28 1.5-2.73 2.5-3.95 3l-3-3z"/><path d="M9 12l2 2"/></svg>
+                        </span>
+                        <span class="cat-title">Participant Pass</span>
+                        <span class="cat-desc">100% Free • Innovators & Students</span>
+                      </div>
+
+                      <!-- 2. Delegate Tab -->
+                      <div class="cat-tab" data-category="delegate" id="tab-cat-delegate">
+                        <span class="cat-icon">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        </span>
+                        <span class="cat-title">Official Delegate</span>
+                        <span class="cat-desc">100% Free • Corporate & Industry</span>
+                      </div>
+
+                      <!-- 3. Faculty Tab -->
+                      <div class="cat-tab" data-category="faculty" id="tab-cat-faculty">
+                        <span class="cat-icon">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                        </span>
+                        <span class="cat-title">Faculty / Academic</span>
+                        <span class="cat-desc">100% Free • Professors & Mentors</span>
+                      </div>
+                    </div>
+
+                    <!-- Reference Ticket Breakdown Summary -->
+                    <div class="form-grid">
+                      <div class="form-group full-width">
+                        <label>Ticket Pathway Selected <span class="req">*</span></label>
+                        <input type="text" class="form-control" id="display_ticket_type" readonly style="background: #f8fafc; font-weight: 700; color: #0f172a;" value="Innovator / Participant Pass - Complimentary Free Access (₹0)">
+                      </div>
+
+                      <div class="form-group">
+                        <label>Number of Attendees <span class="req">*</span></label>
+                        <input type="text" class="form-control" id="num_attendees" value="1" readonly style="background: #f8fafc;">
+                      </div>
+
+                      <div class="form-group">
+                        <label for="track_or_industry">Registration Track / Sector <span class="req">*</span></label>
+                        <select class="form-control" id="track_or_industry" name="track_or_industry">
+                          <option value="Artificial Intelligence & AGI" selected>Artificial Intelligence & AGI</option>
+                          <option value="Deep-Tech, IoT & Sensors">Deep-Tech, IoT & Sensors</option>
+                          <option value="Quantum Systems & Computing">Quantum Systems & Computing</option>
+                          <option value="Frontier Robotics & Autonomy">Frontier Robotics & Autonomy</option>
+                          <option value="BioTech, Longevity & Ethics">BioTech, Longevity & Ethics</option>
+                          <option value="Clean Energy & Sustainable Tech">Clean Energy & Sustainable Tech</option>
+                          <option value="Incubation, Patents & Venture Growth">Incubation, Patents & Venture Growth</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="ticket-summary-box" id="ticket-pricing-box">
+                      <div class="ticket-price-row">
+                        <span style="font-size: 13px; font-weight: 700; color: #475569;" id="ticket-fee-label">Pass Access Fee:</span>
+                        <span class="ticket-price-val" id="ticket-fee-val" style="color: #16a34a;">₹0 (Free Access)</span>
+                      </div>
+                      <div class="ticket-price-sub" id="ticket-fee-sub">
+                        All passes (Participant, Corporate Delegate, and Faculty & Academic) are 100% complimentary & free for YES 2026.
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- CARD 2: PERSONAL & CONTACT INFORMATION -->
+                  <div class="form-section-card" id="section-card-personal-info">
+                    <div class="section-card-header">
+                      <span class="section-card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                      </span>
+                      <span class="section-card-title">Personal & Contact Information</span>
+                    </div>
+
+                    <div class="form-grid">
+                      <div class="form-group full-width">
+                        <label for="full_name">Full Legal Name <span class="req">*</span></label>
+                        <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Enter attendee full name" required>
+                        <span class="field-error-msg" id="err-full_name" style="display: none;">Please enter your full legal name.</span>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="email">Email Address <span class="req">*</span></label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="attendee@domain.com" required>
+                        <span class="field-error-msg" id="err-email" style="display: none;">Please enter a valid email address for pass issuance.</span>
+                        <span class="field-error-msg" id="err-duplicate-email" style="display: none; color: #dc2626; font-weight: 700; margin-top: 6px; font-size: 12px; line-height: 1.4;">⚠️ This email is already registered for YES 2026. Please check your inbox for your pass or use another email.</span>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="phone">Phone / Mobile Number <span class="req">*</span></label>
+                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="+91 98765 43210" required>
+                        <span class="field-error-msg" id="err-phone" style="display: none;">Please provide a mobile contact number.</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- CARD 3: ORGANISATION INFORMATION (MATCHING REFERENCE DESIGN) -->
+                  <div class="form-section-card" id="section-card-org-info">
+                    <div class="section-card-header">
+                      <span class="section-card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
+                      </span>
+                      <span class="section-card-title">Organisation Information</span>
+                    </div>
+
+                    <div class="form-grid">
+                      <div class="form-group full-width">
+                        <label for="organization">Organisation / University / Company Name <span class="req">*</span></label>
+                        <input type="text" class="form-control" id="organization" name="organization" placeholder="Enter organisation or institution name" required>
+                        <span class="field-error-msg" id="err-organization" style="display: none;">Organisation / institution name is required.</span>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="designation">Job Title / Academic Role</label>
+                        <input type="text" class="form-control" id="designation" name="designation" placeholder="e.g. Student Innovator, Founder, Professor">
+                      </div>
+
+                      <div class="form-group">
+                        <label for="org_type">Organisation Type</label>
+                        <select class="form-control" id="org_type" name="org_type">
+                          <option value="Academic Institution / University" selected>Academic Institution / University</option>
+                          <option value="Startup / Early-stage Venture">Startup / Early-stage Venture</option>
+                          <option value="Corporate / Enterprise">Corporate / Enterprise</option>
+                          <option value="Government / R&D Agency">Government / R&D Agency</option>
+                          <option value="Incubator / Accelerator">Incubator / Accelerator</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- CARD 4: CATEGORY SPECIFIC CREDENTIALS -->
+                  <div class="form-section-card" id="section-card-category-custom">
+                    <div class="section-card-header">
+                      <span class="section-card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                      </span>
+                      <span class="section-card-title" id="cat-card-title">Category Credentials & Preferences</span>
+                    </div>
+
+                    <!-- 1. Participant Custom Fields -->
+                    <div class="cat-fields-section" data-cat="participant">
+                      <div class="form-grid">
+                        <div class="form-group">
+                          <label for="tshirt_size">Summit Swag T-Shirt Size</label>
+                          <select class="form-control" id="tshirt_size" name="tshirt_size">
+                            <option value="S">Small (S)</option>
+                            <option value="M" selected>Medium (M)</option>
+                            <option value="L">Large (L)</option>
+                            <option value="XL">Extra Large (XL)</option>
+                            <option value="2XL">Double XL (2XL)</option>
+                          </select>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="portfolio_url">GitHub / Portfolio / LinkedIn URL</label>
+                          <input type="url" class="form-control" id="portfolio_url" name="portfolio_url" placeholder="https://github.com/username">
+                        </div>
+
+                        <div class="form-group full-width">
+                          <label for="interests">Technical Interests & Project Focus</label>
+                          <input type="text" class="form-control" id="interests" name="interests" placeholder="e.g. LLM Agents, Embedded Robotics, Smart Mobility">
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 2. Delegate Custom Fields -->
+                    <div class="cat-fields-section" data-cat="delegate" style="display: none;">
+                      <div class="form-grid">
+                        <div class="form-group">
+                          <label for="b2b_networking">B2B Matchmaking Suite Participation</label>
+                          <select class="form-control" id="b2b_networking" name="b2b_networking">
+                            <option value="Yes - Active Buyer & Partner Matching" selected>Yes - Active Buyer & Partner Matching</option>
+                            <option value="Yes - General Access">Yes - General Networking Lounge</option>
+                            <option value="No - Keynotes Only">No - Keynotes Only</option>
+                          </select>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="tax_id">Company GSTIN / Tax ID (for Invoice)</label>
+                          <input type="text" class="form-control" id="tax_id" name="tax_id" placeholder="e.g. 29AAACV1234F1Z5">
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 3. Faculty Custom Fields -->
+                    <div class="cat-fields-section" data-cat="faculty" style="display: none;">
+                      <div class="form-grid">
+                        <div class="form-group">
+                          <label for="faculty_title">Honorific / Academic Title <span class="req">*</span></label>
+                          <select class="form-control" id="faculty_title" name="faculty_title">
+                            <option value="Dr." selected>Dr.</option>
+                            <option value="Prof.">Prof.</option>
+                            <option value="Assoc. Prof.">Assoc. Prof.</option>
+                            <option value="Asst. Prof.">Asst. Prof.</option>
+                            <option value="Dean / Principal">Dean / Principal</option>
+                          </select>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="faculty_role">Academic Position / Role <span class="req">*</span></label>
+                          <select class="form-control" id="faculty_role" name="faculty_role">
+                            <option value="Professor & HOD" selected>Professor & Head of Department (HOD)</option>
+                            <option value="Professor">Professor</option>
+                            <option value="Associate Professor">Associate Professor</option>
+                            <option value="Assistant Professor">Assistant Professor</option>
+                            <option value="Dean / Director">Dean / Director</option>
+                            <option value="Research Guide / Scholar">Research Guide / Scholar</option>
+                          </select>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="faculty_dept">Department / Academic Branch <span class="req">*</span></label>
+                          <input type="text" class="form-control" id="faculty_dept" name="faculty_dept" placeholder="e.g. Computer Science & Engg / AI & DS">
+                        </div>
+
+                        <div class="form-group">
+                          <label for="faculty_college_code">Faculty ID / VTU College Code</label>
+                          <input type="text" class="form-control" id="faculty_college_code" name="faculty_college_code" placeholder="e.g. VTU-2KL-042 or EMP-8821">
+                        </div>
+
+                        <div class="form-group full-width">
+                          <label for="faculty_engagement">Primary Conclave Engagement Interest</label>
+                          <select class="form-control" id="faculty_engagement" name="faculty_engagement">
+                            <option value="Startup Mentor / Pitch Evaluator" selected>Startup Mentor / Pitch Evaluator</option>
+                            <option value="Research Commercialization & Patents">Research Commercialization & Patents</option>
+                            <option value="Industry-Academia Collaboration Roundtable">Industry-Academia Collaboration Roundtable</option>
+                            <option value="General Faculty Delegate & Symposium Attendee">General Faculty Delegate & Symposium Attendee</option>
+                          </select>
+                        </div>
+
+                        <div class="form-group full-width">
+                          <label for="faculty_specialization">Research Domain & Focus Area</label>
+                          <input type="text" class="form-control" id="faculty_specialization" name="faculty_specialization" placeholder="e.g. Generative AI, Robotics, Renewable Energy, VLSI, BioTech">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Step 1 Navigation CTA -->
+                  <div style="margin-top: 10px;">
+                    <button type="button" class="btn btn-primary btn-lg" id="btn-to-step-2" style="width: 100%; justify-content: center; font-size: 16px; padding: 14px 24px; box-shadow: 0 4px 14px rgba(234, 88, 12, 0.28);">
+                      Proceed to Review & Preview &rarr;
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Right Column: Real-time Sticky Live Badge Preview -->
+                <div class="badge-preview-column">
+                  <div class="preview-label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    Live Badge Preview
+                  </div>
+
+                  <div class="preview-badge-card badge-participant" id="live-preview-badge">
+                    <div class="lanyard-slot"></div>
+                    
+                    <div class="badge-inner">
+                      <div class="badge-event-title" style="font-size: 14px; font-weight: 900; letter-spacing: 1px; color: var(--text-main); margin-bottom: 2px;">YES 2026</div>
+                      <div style="font-size: 9px; letter-spacing: 1px; color: var(--text-dim); font-weight: 700; margin-bottom: 12px;">VTU VRIF BELAGAVI</div>
+
+                      <div class="badge-cat-banner" id="preview-cat-banner">
+                        PARTICIPANT PASS
+                      </div>
+
+                      <div class="badge-photo-placeholder">
+                        <span id="preview-initials">YES</span>
+                      </div>
+
+                      <div class="preview-name" id="preview-name">Attendee Name</div>
+                      <div class="preview-role" id="preview-role">Summit Attendee</div>
+                      <div class="preview-org" id="preview-org">Organization / Institution</div>
+
+                      <div class="preview-qr-box" style="background: #ffffff; padding: 6px; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                        <img id="live-preview-qr" src="/api/registration/YES26-PREVIEW/qr.png" alt="Preview QR Pass" style="width: 100%; height: 100%; display: block; image-rendering: pixelated;">
+                      </div>
+
+                      <div class="preview-id" style="color: var(--secondary);">YES26-PREVIEW</div>
+                    </div>
+
+                    <div style="background: rgba(0,0,0,0.3); padding: 8px 14px; font-size: 10px; color: #94a3b8; display: flex; justify-content: space-between;">
+                      <span>SEPT 27-28, 2026</span>
+                      <span>VTU BELAGAVI</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </form>
+          </div>
+
+          <!-- =======================================================
+               STEP 2: REVIEW & PREVIEW (MATCHING REFERENCE WORKFLOW)
+               ======================================================= -->
+          <div id="step-2-view" style="display: none;">
+            <div class="reg-layout">
+              
+              <!-- Left Column: Formatted Review Details -->
+              <div class="review-details-col">
+                <div class="form-section-card">
+                  <div class="section-card-header">
+                    <span class="section-card-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    </span>
+                    <span class="section-card-title">Review Registration Summary</span>
+                  </div>
+
+                  <p style="color: var(--text-muted); font-size: 13px; margin-top: -8px; margin-bottom: 20px;">
+                    Please verify your attendee details and pass configuration before final credential issuance.
+                  </p>
+
+                  <!-- Dynamic Review Data -->
+                  <div id="review-content-target">
+                    <!-- Populated dynamically by registration.js -->
+                  </div>
+
+                  <!-- Terms & Consent Checkbox -->
+                  <div class="checkbox-row" style="margin-top: 24px; padding-top: 18px; border-top: 1px solid #e2e8f0;">
+                    <input type="checkbox" id="review-terms" checked required>
+                    <label for="review-terms">
+                      I confirm that all entered details are accurate and agree to receive the official QR access badge and summit notifications.
+                    </label>
+                  </div>
+
+                  <!-- Wizard Action Buttons -->
+                  <div class="wizard-nav-actions">
+                    <button type="button" class="btn btn-secondary btn-lg" id="btn-back-to-step-1">
+                      &larr; Back to Edit
+                    </button>
+                    <button type="button" class="btn btn-primary btn-lg" id="btn-confirm-registration" style="padding: 12px 28px; box-shadow: 0 4px 14px rgba(234, 88, 12, 0.3);">
+                      Confirm & Complete Registration &rarr;
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column: Live Badge Preview -->
+              <div class="badge-preview-column">
+                <div class="preview-label">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  Official Badge Preview
+                </div>
+                <div id="step-2-badge-placeholder"></div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- =======================================================
+               STEP 3: REGISTRATION CONFIRMATION (FINAL STEP)
+               ======================================================= -->
+          <div id="step-3-view" style="display: none;">
+            <div style="max-width: 680px; margin: 0 auto; text-align: center;">
+              
+              <div class="success-icon-wrap" style="margin-bottom: 20px;">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+
+              <h2 style="font-size: 28px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
+                Registration Confirmed!
+              </h2>
+              <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 28px;">
+                Your official digital credentials and scannable check-in pass have been created and dispatched to your email.
+              </p>
+
+              <!-- Digital Pass Ticket Card -->
+              <div class="ticket-pass-card" style="background: #ffffff; border: 2px solid #e2e8f0; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.06);">
+                <div class="ticket-header">
+                  <div>
+                    <span style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); font-weight: 700;">Registration ID</span>
+                    <div style="font-family: var(--font-mono); font-size: 20px; font-weight: 800; color: #0284c7;" id="step3-reg-id">YES26-PAR-XXXX</div>
+                  </div>
+                  <span class="pill-cat pill-cat-participant" id="step3-attendee-cat">PARTICIPANT PASS</span>
+                </div>
+
+                <div style="text-align: center; margin: 20px 0;">
+                  <div style="background: #ffffff; display: inline-block; padding: 14px; border-radius: 14px; border: 2px solid #cbd5e1; box-shadow: 0 4px 16px rgba(0,0,0,0.08);">
+                    <img id="step3-qr-img" src="" alt="Official Check-in QR Code" style="width: 210px; height: 210px; display: block; image-rendering: pixelated;">
+                  </div>
+                  <div style="font-size: 14px; font-weight: 800; color: #0f172a; margin-top: 10px;">Official Check-In QR Pass</div>
+                  <div style="font-size: 11px; color: var(--text-dim); margin-top: 2px;">Optimized for venue camera scanner and mobile cameras</div>
+                </div>
+
+                <div style="font-size: 14px; line-height: 1.6; border-top: 1px solid #f1f5f9; padding-top: 14px;">
+                  <div><strong id="step3-attendee-name" style="font-size: 16px;">Attendee Name</strong></div>
+                  <div style="color: var(--text-muted);" id="step3-attendee-org">Organization</div>
+                  <div style="color: var(--text-dim); font-size: 12px; margin-top: 6px;">Confirmation dispatched to: <span id="step3-attendee-email" style="font-weight: 700; color: #0284c7;"></span></div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="ticket-actions" style="margin-top: 24px; display: flex; flex-direction: column; gap: 12px;">
+                <a id="step3-dl-qr-pass" class="btn btn-primary btn-lg" href="#" download style="width: 100%; justify-content: center; font-size: 15px; padding: 14px 20px; box-shadow: 0 4px 14px rgba(234, 88, 12, 0.28);">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="7" y="7" width="3" height="3"/><rect x="14" y="7" width="3" height="3"/><rect x="7" y="14" width="3" height="3"/><path d="M14 14h3v3h-3z"/></svg>
+                  Download QR Pass with ID (PNG)
+                </a>
+                <a id="step3-dl-pdf" class="btn btn-outline-cyan btn-lg" href="#" download style="width: 100%; justify-content: center; font-size: 14px; padding: 12px 20px;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                  Download Full Summit Badge (PDF)
+                </a>
+                <button type="button" class="btn btn-secondary" id="btn-register-another" style="margin-top: 8px;">
+                  Register Another Attendee &rarr;
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- =======================================================
+       ANIMATED PROCESSING LOADER OVERLAY (USER EXPLICIT REQUIREMENT)
+       ======================================================= -->
+  <div class="processing-overlay" id="processing-loader-overlay">
+    <div class="processing-modal">
+      <div class="processing-spinner-wrap">
+        <div class="processing-spinner-outer"></div>
+        <div class="processing-spinner-inner"></div>
+        <div class="processing-mascot-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>
+        </div>
+      </div>
+
+      <h3 class="processing-title">Processing Registration...</h3>
+      <div class="processing-status-msg" id="processing-status-text">
+        Issuing official digital pass & credentials...
+      </div>
+
+      <div class="processing-progress-bar">
+        <div class="processing-progress-fill"></div>
+      </div>
+
+      <div class="processing-hint">
+        Please wait a moment while your QR pass and vector PDF badge are generated.
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/badge.js?v=2026.9"></script>
+  <script src="/static/js/registration.js?v=2026.9"></script>
+  <script>
+    // HTML-Level Override: Ensure ALL passes (Participant, Delegate, Faculty) are 100% free
+    (function() {
+      function makeAllPassesFree() {
+        var displayTicket = document.getElementById('display_ticket_type');
+        var feeLabel = document.getElementById('ticket-fee-label');
+        var feeVal = document.getElementById('ticket-fee-val');
+        var feeSub = document.getElementById('ticket-fee-sub');
+
+        if (!displayTicket || !feeVal) return;
+
+        feeLabel.textContent = 'Pass Access Fee:';
+        feeVal.textContent = '₹0 (Free Access)';
+        feeVal.style.color = '#16a34a';
+
+        var cat = (typeof currentCategory !== 'undefined') ? currentCategory : 'participant';
+        if (cat === 'delegate') {
+          displayTicket.value = 'Official Corporate Delegate Pass - Complimentary Free Access (₹0)';
+          feeSub.textContent = '100% Complimentary Free Access. Includes B2B Matchmaking Suite, Policy Roundtables, and Summit Sessions.';
+        } else if (cat === 'faculty' || cat === 'vip') {
+          displayTicket.value = 'Faculty & Academic Pass - Complimentary Free Access (₹0)';
+          feeSub.textContent = '100% Complimentary Free Access. Authorized for professors, deans, and research scholars from VTU affiliated colleges.';
+        } else {
+          displayTicket.value = 'Innovator & Participant Pass - Complimentary Free Access (₹0)';
+          feeSub.textContent = '100% Complimentary Free Access. Includes entry to technical hackathons, prototype exhibits, open sessions, and digital pass.';
+        }
+      }
+
+      window.updateTicketPricingSummary = makeAllPassesFree;
+
+      document.querySelectorAll('.cat-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+          setTimeout(makeAllPassesFree, 15);
+        });
+      });
+
+      makeAllPassesFree();
+      setTimeout(makeAllPassesFree, 80);
+      window.addEventListener('DOMContentLoaded', makeAllPassesFree);
+    })();
+  </script>
+</body>
+</html>

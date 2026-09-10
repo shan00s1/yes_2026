@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Venue Camera QR Scanner & Check-in Desk • YES 2026 | VTU VRIF Belagavi</title>
+  <meta name="description" content="High-speed camera QR scanner for venue access control, duplicate prevention, and instant lanyard badge printing at YES 2026 VTU Belagavi.">
+
+  <link rel="stylesheet" href="/static/css/style.css?v=2026.11">
+  <link rel="stylesheet" href="/static/css/scanner.css?v=2026.11">
+  <link rel="stylesheet" href="/static/css/badge.css?v=2026.11">
+
+  <!-- Local Standalone Barcode / QR Engines (Zero External CDN Dependency) -->
+  <script src="/static/js/zxing.min.js?v=2026.10"></script>
+  <script src="/static/js/jsQR.js?v=2026.10"></script>
+</head>
+<body data-lan-ip="{{ lan_ip }}" data-is-https="{{ 'true' if is_https else 'false' }}">
+
+  <!-- Navigation Bar -->
+  <header>
+    <nav class="navbar">
+      <div class="container">
+        <a href="/" class="brand-logo">
+          <img src="/static/img/VRIF%20LOGO.png" alt="VTU VRIF Belagavi Logo" class="nav-vrif-logo">
+          <div class="brand-divider"></div>
+          <img src="/static/img/Young%20Entrepreneur%20SuMmit%20(9).png" alt="YES 2026 Mascot" class="nav-yes-mascot">
+          <span class="brand-text">YES <span class="gradient-accent">2026</span></span>
+        </a>
+
+        <div class="nav-actions">
+          <a href="/admin" class="btn btn-secondary btn-sm" style="display: inline-flex; align-items: center; gap: 6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Back to Admin Console
+          </a>
+          <a href="/admin/logout" class="nav-link-subtle" style="color: var(--danger);">Log Out</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="scanner-page">
+    <div class="container">
+      
+      <!-- Insecure Origin Banner (Auto-shown only if on plain HTTP on an IP) -->
+      <div id="origin-warning-banner" style="display: none; background: #fff1f2; border: 1.5px solid #fecdd3; border-radius: var(--radius-md); padding: 14px 20px; margin-bottom: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <div>
+            <strong style="color: #9f1239; font-size: 14px;">Webcam Note: Use localhost for instant camera access</strong>
+            <div style="font-size: 12px; color: #475569; margin-top: 2px;">
+              Browsers restrict live webcam streams to secure contexts. Open via <strong>http://localhost:5000/checkin</strong> on this PC with zero warnings.
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <a href="http://localhost:5000/checkin" class="btn btn-primary btn-sm" id="btn-switch-localhost">
+            Open on localhost:5000
+          </a>
+          <a href="https://{{ lan_ip }}:5443/checkin" class="btn btn-secondary btn-sm">
+            Open HTTPS (Port 5443)
+          </a>
+        </div>
+      </div>
+
+      <!-- Top Kiosk Bar -->
+      <div class="kiosk-header-bar">
+        <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+          <div class="station-pill">
+            <span class="dot"></span>
+            <span>Station:</span>
+            <input type="text" id="kiosk-station-name" value="Gate 1 • APJ Abdul Kalam Auditorium" style="background: transparent; border: none; color: inherit; font-weight: 700; width: 230px; outline: none;">
+          </div>
+          <span style="font-size: 13px; color: var(--text-muted);">
+            Real-time camera check-in with duplicate entry prevention
+          </span>
+        </div>
+
+        <!-- Real-time Attendance Counters -->
+        <div class="kiosk-stats-row">
+          <div class="kiosk-stat">
+            <div class="num" id="kiosk-stat-checked">0</div>
+            <div class="lbl">Checked In</div>
+          </div>
+          <div class="kiosk-stat">
+            <div class="num" id="kiosk-stat-total">0</div>
+            <div class="lbl">Total Registered</div>
+          </div>
+          <div class="kiosk-stat">
+            <div class="num" id="kiosk-stat-rate" style="color: var(--secondary);">0%</div>
+            <div class="lbl">Attendance Rate</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Kiosk Grid: Camera Left, Feedback & Stream Right -->
+      <div class="kiosk-grid">
+        
+        <!-- Left: Camera Viewport & Controls -->
+        <div>
+          <div class="camera-card">
+            <div class="camera-viewport" id="camera-viewport-box" style="position: relative; background: #050811;">
+              
+              <!-- Floating Live Camera Status Pill -->
+              <div class="cam-status-pill" id="cam-status-pill">
+                <span class="cam-dot" id="cam-status-dot"></span>
+                <span id="cam-status-text">Starting Default Camera...</span>
+              </div>
+
+              <!-- Direct Native WebRTC Video Element -->
+              <video id="qr-video" playsinline autoplay muted style="width: 100%; height: 100%; object-fit: cover;"></video>
+              
+              <!-- Offscreen Canvas for Frame Capture -->
+              <canvas id="qr-canvas" style="display: none;"></canvas>
+
+              <!-- Scanning Reticle & Laser Beam -->
+              <div class="scanner-overlay" id="scanner-overlay" style="display: none;">
+                <div class="target-frame">
+                  <div class="target-corner tl"></div>
+                  <div class="target-corner tr"></div>
+                  <div class="target-corner bl"></div>
+                  <div class="target-corner br"></div>
+                  <div class="laser-beam"></div>
+                </div>
+              </div>
+
+              <!-- Camera Loading / Fallback / Error State Overlay -->
+              <div id="camera-placeholder" style="position: absolute; inset: 0; background: #090d16; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; z-index: 10;">
+                <div class="cam-pulse-ring" id="cam-pulse-indicator"></div>
+                <h3 id="cam-placeholder-title" style="font-size: 19px; margin-bottom: 6px; color: #f1f5f9;">Starting Camera Scanner...</h3>
+                <p id="cam-placeholder-desc" style="font-size: 13px; color: var(--text-muted); max-width: 340px; margin-bottom: 16px;">
+                  Accessing available camera for real-time QR badge check-in.
+                </p>
+                <div id="cam-placeholder-actions" style="display: none;">
+                  <button class="btn btn-primary btn-lg" id="btn-start-camera-overlay">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    Turn On Camera
+                  </button>
+                </div>
+                <div id="camera-error-banner" style="display: none; margin-top: 14px; max-width: 380px;"></div>
+              </div>
+
+            </div>
+
+            <!-- Controls bar -->
+            <div class="camera-controls">
+              <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <button class="btn btn-secondary btn-sm" id="btn-toggle-camera">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                  Pause Camera
+                </button>
+
+                <!-- Camera device select & switch button -->
+                <div style="display: inline-flex; align-items: center; gap: 6px;">
+                  <select id="camera-select" class="form-control" style="font-size: 12px; padding: 6px 10px; max-width: 170px; display: none;"></select>
+                  <button class="btn btn-secondary btn-sm" id="btn-switch-camera" style="display: none; padding: 6px 10px;" title="Switch Camera">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                  </button>
+                </div>
+
+                <label class="btn btn-outline-cyan btn-sm" style="margin: 0; cursor: pointer;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                  Take Photo & Scan
+                  <input type="file" accept="image/*" capture="environment" style="display: none;" onchange="handleDirectCapture(this)">
+                </label>
+
+                <label class="btn btn-secondary btn-sm" style="margin: 0; cursor: pointer;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  Upload QR Image
+                  <input type="file" id="qr-file-input" accept="image/*" style="display: none;">
+                </label>
+              </div>
+
+              <div style="font-size: 12px; color: var(--text-dim);">
+                Audio: <strong style="color: var(--success);">Active (Chime + Buzzer)</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Manual Lookup / Barcode Gun Input -->
+          <div class="form-card" style="margin-top: 24px; padding: 20px 24px;">
+            <label style="font-size: 13px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 8px;">
+              Manual Registration ID / USB Scanner Input
+            </label>
+            <form id="manual-search-form" class="manual-input-box">
+              <input type="text" id="manual-reg-id" class="form-control" placeholder="Enter Registration ID (e.g. YES26-FAC-12345)" style="font-family: var(--font-mono); text-transform: uppercase;">
+              <button type="submit" class="btn btn-secondary">Validate ID</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Right: Verification Result & Live Stream Feed -->
+        <div class="scan-result-container">
+          
+          <!-- Feedback Card (Success / Duplicate / Not Found) -->
+          <div id="scan-feedback-container">
+            <div class="feedback-card state-idle">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 16px; opacity: 0.4;"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h.01M17 7h.01M7 17h.01M17 17h.01"/></svg>
+              <h3 style="font-size: 18px; color: var(--text-main); margin-bottom: 6px;">Scanner Ready</h3>
+              <p style="font-size: 13px; color: var(--text-dim);">
+                Turn on your camera and point the attendee's QR pass or printed badge toward the screen.
+              </p>
+            </div>
+          </div>
+
+          <!-- Recent Check-ins Ticker Card -->
+          <div class="recent-checkins-card">
+            <h4>
+              <span>Live Check-in Activity Stream</span>
+              <span class="dot" style="display: inline-block;"></span>
+            </h4>
+            <div class="recent-stream-list" id="recent-stream-list">
+              <!-- Dynamically populated in real time -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="/static/js/badge.js?v=2026.11"></script>
+  <script src="/static/js/scanner.js?v=2026.11"></script>
+</body>
+</html>

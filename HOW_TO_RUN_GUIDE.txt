@@ -1,0 +1,122 @@
+================================================================================
+          YOUNG ENTREPRENEURS SUMMIT - YES 2026
+       VTU'S VISVESVARAYA RESEARCH & INNOVATION FOUNDATION (VRIF)
+     MODULAR ARCHITECTURE, SUPABASE CLOUD & DEPLOYMENT GUIDE
+================================================================================
+
+1. CLEAN ARCHITECTURAL STRUCTURE
+--------------------------------------------------------------------------------
+The codebase has been refactored into a clean, enterprise-grade architecture:
+
+d:\yes\
+  ├── backend/
+  │     ├── app.py                 (Flask App Factory with frontend asset mapping)
+  │     ├── config.py              (Supabase config, auth secrets, env normalizer)
+  │     ├── routes/
+  │     │     ├── pages.py         (HTML Template views: /, /register, /checkin, /admin)
+  │     │     ├── api_attendees.py (Attendee registration, QR check-in scanner)
+  │     │     ├── api_admin.py     (Admin authentication, live stats, CSV export)
+  │     │     └── api_event.py     (Health checks, metadata, DB connectivity status)
+  │     └── services/
+  │           └── email_service.py (QR code generation, automated email passes)
+  │
+  ├── database/
+  │     ├── __init__.py            (Unified repository router: Supabase Cloud & buffer)
+  │     ├── supabase_client.py     (Pure PostgREST Cloud Client via HTTPS port 443)
+  │     ├── connection.py          (Threaded connection pool for direct PostgreSQL)
+  │     └── schema.sql             (Complete Supabase SQL DDL, indexes, and RLS)
+  │
+  ├── frontend/
+  │     ├── templates/             (Clean, executive light-theme Jinja2 HTML views)
+  │     │     ├── index.html       (YES 2026 Summit official landing page)
+  │     │     ├── register.html    (Multi-tier attendee registration portal)
+  │     │     ├── checkin.html     (Continuous camera QR scanner kiosk)
+  │     │     ├── admin.html       (Live monitoring console & analytics)
+  │     │     └── admin_login.html (Secure administrative login screen)
+  │     └── static/
+  │           ├── css/             (Executive light theme, forms, scanner, admin, badge)
+  │           ├── js/              (Dynamic registration, auto-cam scanner, admin)
+  │           └── img/             (Consolidated VTU, VRIF, and summit logos)
+  │
+  ├── scripts/
+  │     └── verify_supabase.py     (Standalone CLI diagnostics tool for Supabase)
+  │
+  ├── app.py                       (Local development entrypoint)
+  ├── wsgi.py                      (Production multi-threaded Waitress WSGI runner)
+  ├── vercel.json                  (Vercel Serverless configuration)
+  ├── .vercelignore                (Deployment exclusion rules)
+  ├── requirements.txt             (Production dependencies)
+  ├── .env & .env.example          (Environment configuration)
+  └── test_system.py               (Automated system integration test suite)
+
+
+================================================================================
+2. SUPABASE CLOUD SETUP (1-CLICK DDL ACTIVATION)
+================================================================================
+Your Supabase credentials are automatically loaded from `.env`:
+  - Supabase URL: https://your-project.supabase.co
+  - Key:          your_supabase_secret_key_here
+
+To activate the tables in Supabase Cloud:
+  1. Open the Supabase SQL Editor:
+     >> https://supabase.com/dashboard/project/vlxktgfdwjtzomfsqbgt/sql
+  2. Click "+ New query".
+  3. Copy and paste the entire contents of `database/schema.sql`.
+  4. Click "RUN" (green button).
+  5. Run diagnostic check:
+     python scripts/verify_supabase.py
+
+
+================================================================================
+3. RUNNING LOCALLY
+================================================================================
+Development Server:
+  python app.py
+
+Production WSGI Server (Multi-Threaded Waitress):
+  python wsgi.py
+
+Run Automated Test Suite:
+  python test_system.py
+
+
+================================================================================
+4. DEPLOYING TO VERCEL
+================================================================================
+The project is 100% prepared for Vercel Serverless deployment:
+  - Ephemeral & Read-Only Safe: Zero SQLite dependencies; pure Supabase Cloud.
+  - Port 443 REST: PostgREST communicates over standard HTTPS without connection pool exhaustion.
+  - Static Asset Routing: `vercel.json` maps static files directly to `/frontend/static/$1`.
+
+To deploy:
+  1. Install Vercel CLI:
+     npm i -g vercel
+  2. In `d:\yes`, run:
+     vercel
+  3. Set Environment Variables in Vercel Dashboard (or via CLI):
+     SUPABASE_URL=https://your-project.supabase.co
+     SUPABASE_KEY=your_supabase_secret_key_here
+     SECRET_KEY=your-production-secret-key
+  4. Deploy to Production:
+     vercel --prod
+
+
+================================================================================
+5. SYSTEM URL DIRECTORY & CREDENTIALS
+================================================================================
+PORTAL                          URL                             ACCESS
+--------------------------------------------------------------------------------
+Landing Page                    http://localhost:5000/          Public
+3-Tier Registration Portal      http://localhost:5000/register  Public
+Pass PDF Download               http://localhost:5000/api/registration/<ID>/pdf Public
+Admin Console & Venue Scanner   http://localhost:5000/admin     Protected (Admin)
+Venue Camera QR Scanner Kiosk   http://localhost:5000/checkin   Protected (Redirects to /admin)
+Real-time Health Check API      http://localhost:5000/api/health Public
+Database Status & Latency API   http://localhost:5000/api/db-status Public
+--------------------------------------------------------------------------------
+
+ADMIN CREDENTIALS:
+  Username: admin
+  Password: yes2026
+================================================================================
+

@@ -1,0 +1,14 @@
+# Vercel Deployment Exclusions
+.env
+.env.local
+*.db
+*.sqlite
+*.sqlite3
+__pycache__/
+*.pyc
+*.pyo
+.git/
+test_system.py
+event_nexus.db
+cert.pem
+key.pem
