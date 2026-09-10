@@ -38,12 +38,19 @@ except Exception as init_err:
 </body>
 </html>""", 500
 
-# Error-catching WSGI middleware to prevent unhandled 500 FUNCTION_INVOCATION_FAILED crashes
+# Error-catching & path-restoring WSGI middleware for Vercel
 class VercelWSGIMiddleware:
     def __init__(self, wsgi_app):
         self.wsgi_app = wsgi_app
 
     def __call__(self, environ, start_response):
+        # Restore original path from Vercel edge rewrite headers
+        orig_path = environ.get('HTTP_X_MATCHED_PATH') or environ.get('HTTP_X_FORWARDED_URI')
+        if orig_path and not orig_path.startswith('/api/index'):
+            clean_path = orig_path.split('?')[0]
+            environ['PATH_INFO'] = clean_path
+            environ['REQUEST_URI'] = orig_path
+
         try:
             return self.wsgi_app(environ, start_response)
         except Exception:
