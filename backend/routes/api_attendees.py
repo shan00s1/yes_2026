@@ -36,7 +36,7 @@ def api_register():
         if not full_name or not email or not phone or not org:
             return jsonify({"success": False, "error": "Please fill in all required fields (Name, Email, Phone, Organization)."}), 400
 
-        # Duplicate email prevention check
+        # Dynamic database duplicate email prevention check
         existing = get_registration_by_email(email)
         if existing:
             reg_id = existing.get("registration_id", "YES26-PASS")
@@ -80,7 +80,20 @@ def api_register():
             "custom_fields": custom_fields
         }
         
-        attendee = create_registration(record_data)
+        try:
+            attendee = create_registration(record_data)
+        except ValueError as ve:
+            if "DUPLICATE_EMAIL" in str(ve):
+                parts = str(ve).split(":")
+                reg_id = parts[1] if len(parts) > 1 else "YES26-PASS"
+                return jsonify({
+                    "success": False,
+                    "error": f"The email '{email}' is already registered for YES 2026 (Pass ID: {reg_id}). Each email address can only register once.",
+                    "error_type": "DUPLICATE_EMAIL",
+                    "registration_id": reg_id
+                }), 400
+            raise
+            
         email_result = send_confirmation_email(attendee)
         
         return jsonify({
@@ -92,6 +105,37 @@ def api_register():
         })
     except Exception as e:
         logger.error(f"Registration error: {e}", exc_info=True)
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@attendees_bp.route("/api/check-email", methods=["GET"])
+def api_check_email():
+    """Dynamically checks if an email is already registered in the database (Supabase Cloud / Postgres)."""
+    try:
+        raw_email = request.args.get("email", "")
+        email = (raw_email or "").strip().lower()
+        if not email or "@" not in email:
+            return jsonify({"success": False, "exists": False, "error": "Invalid email parameter."}), 400
+
+        existing = get_registration_by_email(email)
+        if existing:
+            reg_id = existing.get("registration_id", "YES26-PASS")
+            return jsonify({
+                "success": True,
+                "exists": True,
+                "email": email,
+                "registration_id": reg_id,
+                "full_name": existing.get("full_name", ""),
+                "message": f"This email '{email}' is already registered for YES 2026 (Pass ID: {reg_id}). Each email can only register once."
+            })
+        else:
+            return jsonify({
+                "success": True,
+                "exists": False,
+                "email": email,
+                "message": "Email is available for registration."
+            })
+    except Exception as e:
+        logger.error(f"Check email error: {e}", exc_info=True)
         return jsonify({"success": False, "error": str(e)}), 500
 
 @attendees_bp.route("/api/checkin/scan", methods=["POST"])

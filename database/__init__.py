@@ -50,6 +50,12 @@ def is_supabase_cloud_active() -> bool:
 # ----------------- UNIFIED DATA REPOSITORY API ----------------- #
 
 def create_registration(data: dict) -> dict:
+    email = data.get("email", "").strip().lower()
+    if email:
+        existing = get_registration_by_email(email)
+        if existing:
+            raise ValueError(f"DUPLICATE_EMAIL:{existing.get('registration_id', 'YES26-PASS')}")
+
     if is_supabase_cloud_active():
         return supabase_client.create_registration(data)
 

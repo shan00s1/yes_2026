@@ -10,6 +10,7 @@ let currentStep = 1;
 document.addEventListener('DOMContentLoaded', () => {
   initCategorySwitcher();
   initFormInputListeners();
+  initEmailRealtimeCheck();
   initWizardNavigation();
   updateLiveBadgePreview();
   updateTicketPricingSummary();
@@ -100,7 +101,7 @@ function updateTicketPricingSummary() {
 // ===================================================================
 function initFormInputListeners() {
   const inputs = [
-    'full_name', 'organization', 'designation', 'track_or_industry',
+    'full_name', 'email', 'organization', 'designation', 'track_or_industry',
     'faculty_title', 'faculty_dept', 'faculty_role', 'faculty_college_code',
     'faculty_engagement', 'faculty_specialization', 'vip_honorific'
   ];
@@ -119,6 +120,112 @@ function initFormInputListeners() {
         if (errMsg) errMsg.style.display = 'none';
         updateLiveBadgePreview();
       });
+    }
+  });
+}
+
+// Dynamic database duplicate email checker state
+let emailCheckTimeout = null;
+let isEmailDuplicate = false;
+let isCheckingEmail = false;
+let lastCheckedEmail = '';
+
+async function checkEmailAvailability(emailVal) {
+  const cleanEmail = (emailVal || '').trim().toLowerCase();
+  const emailInput = document.getElementById('email');
+  const errDuplicate = document.getElementById('err-duplicate-email');
+  const dupText = document.getElementById('duplicate-email-text');
+  const spinner = document.getElementById('email-checking-spinner');
+  const validInd = document.getElementById('email-valid-indicator');
+  const btnStep2 = document.getElementById('btn-to-step-2');
+
+  if (!cleanEmail || !cleanEmail.includes('@') || !cleanEmail.includes('.')) {
+    isEmailDuplicate = false;
+    return false;
+  }
+
+  if (spinner) spinner.style.display = 'inline-block';
+  if (errDuplicate) errDuplicate.style.display = 'none';
+  if (validInd) validInd.style.display = 'none';
+  isCheckingEmail = true;
+
+  try {
+    const resp = await fetch(`/api/check-email?email=${encodeURIComponent(cleanEmail)}`);
+    const data = await resp.json();
+
+    if (spinner) spinner.style.display = 'none';
+    isCheckingEmail = false;
+    lastCheckedEmail = cleanEmail;
+
+    if (data.exists) {
+      isEmailDuplicate = true;
+      if (emailInput) {
+        emailInput.classList.add('has-error');
+        emailInput.style.borderColor = '#dc2626';
+        emailInput.style.backgroundColor = '#fef2f2';
+        emailInput.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.15)';
+      }
+      if (errDuplicate) {
+        errDuplicate.style.display = 'block';
+        if (dupText) {
+          dupText.textContent = `This email '${cleanEmail}' is already registered for YES 2026 (Pass ID: ${data.registration_id}). Each attendee can only register once.`;
+        }
+      }
+      if (validInd) validInd.style.display = 'none';
+      if (btnStep2) btnStep2.setAttribute('disabled', 'true');
+      return false;
+    } else {
+      isEmailDuplicate = false;
+      if (emailInput) {
+        emailInput.classList.remove('has-error');
+        emailInput.style.borderColor = '#16a34a';
+        emailInput.style.backgroundColor = '';
+        emailInput.style.boxShadow = '';
+      }
+      if (errDuplicate) errDuplicate.style.display = 'none';
+      if (validInd) validInd.style.display = 'inline-block';
+      if (btnStep2) btnStep2.removeAttribute('disabled');
+      return true;
+    }
+  } catch (err) {
+    if (spinner) spinner.style.display = 'none';
+    isCheckingEmail = false;
+    console.warn('[Email Check] Database query notice:', err);
+    return true;
+  }
+}
+
+function initEmailRealtimeCheck() {
+  const emailInput = document.getElementById('email');
+  const errEmail = document.getElementById('err-email');
+  const errDuplicate = document.getElementById('err-duplicate-email');
+  const validInd = document.getElementById('email-valid-indicator');
+  const btnStep2 = document.getElementById('btn-to-step-2');
+
+  if (!emailInput) return;
+
+  emailInput.addEventListener('input', () => {
+    emailInput.classList.remove('has-error');
+    if (errEmail) errEmail.style.display = 'none';
+    if (errDuplicate) errDuplicate.style.display = 'none';
+    if (validInd) validInd.style.display = 'none';
+    isEmailDuplicate = false;
+    if (btnStep2) btnStep2.removeAttribute('disabled');
+
+    clearTimeout(emailCheckTimeout);
+    const val = emailInput.value.trim().toLowerCase();
+    if (val.includes('@') && val.includes('.')) {
+      emailCheckTimeout = setTimeout(() => {
+        checkEmailAvailability(val);
+      }, 450);
+    }
+  });
+
+  emailInput.addEventListener('blur', () => {
+    clearTimeout(emailCheckTimeout);
+    const val = emailInput.value.trim().toLowerCase();
+    if (val && val !== lastCheckedEmail) {
+      checkEmailAvailability(val);
     }
   });
 }
@@ -194,10 +301,19 @@ function initWizardNavigation() {
   // Step 1 -> Step 2 Button
   const btnToStep2 = document.getElementById('btn-to-step-2');
   if (btnToStep2) {
-    btnToStep2.addEventListener('click', () => {
-      if (validateStep1()) {
-        populateReviewSummary();
-        goToStep(2);
+    btnToStep2.addEventListener('click', async () => {
+      btnToStep2.disabled = true;
+      const originalHTML = btnToStep2.innerHTML;
+      btnToStep2.innerHTML = `<span>Checking database...</span>`;
+      try {
+        const isValid = await validateStep1();
+        if (isValid) {
+          populateReviewSummary();
+          goToStep(2);
+        }
+      } finally {
+        btnToStep2.disabled = false;
+        btnToStep2.innerHTML = originalHTML;
       }
     });
   }
@@ -229,6 +345,18 @@ function initWizardNavigation() {
     btnRegisterAnother.addEventListener('click', () => {
       const form = document.getElementById('registration-form');
       if (form) form.reset();
+      isEmailDuplicate = false;
+      lastCheckedEmail = '';
+      const emailInput = document.getElementById('email');
+      if (emailInput) {
+        emailInput.style.borderColor = '';
+        emailInput.style.backgroundColor = '';
+        emailInput.style.boxShadow = '';
+      }
+      const errDuplicate = document.getElementById('err-duplicate-email');
+      if (errDuplicate) errDuplicate.style.display = 'none';
+      const validInd = document.getElementById('email-valid-indicator');
+      if (validInd) validInd.style.display = 'none';
       updateLiveBadgePreview();
       updateTicketPricingSummary();
       goToStep(1);
@@ -300,7 +428,7 @@ function goToStep(step) {
   }
 }
 
-function validateStep1() {
+async function validateStep1() {
   const form = document.getElementById('registration-form');
   if (!form) return false;
 
@@ -320,7 +448,7 @@ function validateStep1() {
     if (!el) return;
 
     const val = (el.value || '').trim();
-    if (!val || (f.id === 'email' && !val.includes('@'))) {
+    if (!val || (f.id === 'email' && (!val.includes('@') || !val.includes('.')))) {
       el.classList.add('has-error');
       if (errEl) errEl.style.display = 'block';
       isValid = false;
@@ -331,12 +459,28 @@ function validateStep1() {
     }
   });
 
-  if (!isValid && firstErrorElem) {
-    firstErrorElem.focus();
-    firstErrorElem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if (!isValid) {
+    if (firstErrorElem) {
+      firstErrorElem.focus();
+      firstErrorElem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    return false;
   }
 
-  return isValid;
+  // Dynamic live database check for duplicate email
+  const emailInput = document.getElementById('email');
+  if (emailInput) {
+    const emailVal = emailInput.value.trim().toLowerCase();
+    const isAvailable = await checkEmailAvailability(emailVal);
+    if (!isAvailable || isEmailDuplicate) {
+      emailInput.classList.add('has-error');
+      emailInput.focus();
+      emailInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return false;
+    }
+  }
+
+  return true;
 }
 
 // ===================================================================
@@ -571,12 +715,24 @@ async function processRegistration() {
       if (overlay) overlay.classList.remove('active');
 
       if (result.error_type === 'DUPLICATE_EMAIL') {
-        const activeForm = document.querySelector(`.registration-form[data-category="${currentCategory}"]`);
-        const emailInput = activeForm ? activeForm.querySelector('input[type="email"]') : null;
+        goToStep(1);
+        const emailInput = document.getElementById('email');
+        const errDuplicate = document.getElementById('err-duplicate-email');
+        const dupText = document.getElementById('duplicate-email-text');
+        isEmailDuplicate = true;
         if (emailInput) {
-          emailInput.style.borderColor = '#ef4444';
-          emailInput.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.25)';
+          emailInput.classList.add('has-error');
+          emailInput.style.borderColor = '#dc2626';
+          emailInput.style.backgroundColor = '#fef2f2';
+          emailInput.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.25)';
           emailInput.focus();
+          emailInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        if (errDuplicate) {
+          errDuplicate.style.display = 'block';
+          if (dupText) {
+            dupText.textContent = result.error || 'This email is already registered for YES 2026. Each email address can only register once.';
+          }
         }
       }
       alert(result.error || 'Failed to complete registration. Please check your details.');

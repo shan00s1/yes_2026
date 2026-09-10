@@ -186,11 +186,23 @@
                         <span class="field-error-msg" id="err-full_name" style="display: none;">Please enter your full legal name.</span>
                       </div>
 
-                      <div class="form-group">
+                      <div class="form-group" style="position: relative;">
                         <label for="email">Email Address <span class="req">*</span></label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="attendee@domain.com" required>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="attendee@domain.com" required autocomplete="email">
                         <span class="field-error-msg" id="err-email" style="display: none;">Please enter a valid email address for pass issuance.</span>
-                        <span class="field-error-msg" id="err-duplicate-email" style="display: none; color: #dc2626; font-weight: 700; margin-top: 6px; font-size: 12px; line-height: 1.4;">⚠️ This email is already registered for YES 2026. Please check your inbox for your pass or use another email.</span>
+                        <div id="email-status-box" style="margin-top: 6px;">
+                          <div class="field-error-msg" id="err-duplicate-email" style="display: none; color: #b91c1c; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; padding: 7px 12px; font-weight: 600; font-size: 12px; line-height: 1.4; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                            <span style="font-size: 14px; margin-right: 4px;">⚠️</span>
+                            <span id="duplicate-email-text">This email is already registered for YES 2026. Each email can only register once.</span>
+                          </div>
+                          <div id="email-checking-spinner" style="display: none; color: #0284c7; font-size: 12px; font-weight: 600; padding: 4px 2px;">
+                            <span style="display: inline-block; width: 12px; height: 12px; border: 2px solid #0284c7; border-right-color: transparent; border-radius: 50%; animation: spin 0.75s linear infinite; vertical-align: middle; margin-right: 6px;"></span>
+                            Checking database for existing registration...
+                          </div>
+                          <div id="email-valid-indicator" style="display: none; color: #15803d; font-size: 12px; font-weight: 600; padding: 4px 2px;">
+                            <span style="margin-right: 4px;">✓</span> Email is available for registration
+                          </div>
+                        </div>
                       </div>
 
                       <div class="form-group">

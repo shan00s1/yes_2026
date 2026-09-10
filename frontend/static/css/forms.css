@@ -762,6 +762,11 @@ select.form-control.has-error {
   color: #ea580c;
 }
 
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 @keyframes spinOuter {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }

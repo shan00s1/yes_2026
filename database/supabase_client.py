@@ -153,6 +153,11 @@ def create_registration(data: dict) -> dict:
     custom_fields = data.get("custom_fields", {})
     custom_fields_json = json.dumps(custom_fields) if isinstance(custom_fields, dict) else str(custom_fields)
 
+    if email:
+        existing = get_registration_by_email(email)
+        if existing:
+            raise ValueError(f"DUPLICATE_EMAIL:{existing.get('registration_id', 'YES26-PASS')}")
+
     reg_id = generate_registration_id(category)
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -188,7 +193,12 @@ def create_registration(data: dict) -> dict:
         log_activity(reg_id, "REGISTRATION_CREATED", f"Registered as {category.upper()}")
         return created
     else:
-        logger.warning(f"[Supabase Cloud REST Notice] Insert returned: {res.get('error')}")
+        err_msg = str(res.get("error", ""))
+        logger.warning(f"[Supabase Cloud REST Notice] Insert returned: {err_msg}")
+        if any(keyword in err_msg.lower() for keyword in ["duplicate", "unique", "23505", "already exists"]):
+            existing = get_registration_by_email(email)
+            dup_id = existing.get("registration_id", "YES26-PASS") if existing else "YES26-PASS"
+            raise ValueError(f"DUPLICATE_EMAIL:{dup_id}")
         record["custom_fields"] = custom_fields
         return record
 
