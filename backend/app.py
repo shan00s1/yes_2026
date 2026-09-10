@@ -22,14 +22,32 @@ logger = logging.getLogger("yes2026.app")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
 def create_app():
-    templates_dir = str(BASE_DIR / "frontend" / "templates")
-    static_dir = str(BASE_DIR / "frontend" / "static")
+    current_cwd = Path.cwd()
+    templates_dir = None
+    for candidate in [
+        BASE_DIR / "frontend" / "templates",
+        current_cwd / "frontend" / "templates",
+        BASE_DIR / "templates",
+        current_cwd / "templates"
+    ]:
+        if candidate.exists():
+            templates_dir = str(candidate)
+            break
+    if not templates_dir:
+        templates_dir = str(BASE_DIR / "frontend" / "templates")
 
-    # Fallback check if directories are at root
-    if not os.path.exists(templates_dir) and os.path.exists(str(BASE_DIR / "templates")):
-        templates_dir = str(BASE_DIR / "templates")
-    if not os.path.exists(static_dir) and os.path.exists(str(BASE_DIR / "static")):
-        static_dir = str(BASE_DIR / "static")
+    static_dir = None
+    for candidate in [
+        BASE_DIR / "frontend" / "static",
+        current_cwd / "frontend" / "static",
+        BASE_DIR / "static",
+        current_cwd / "static"
+    ]:
+        if candidate.exists():
+            static_dir = str(candidate)
+            break
+    if not static_dir:
+        static_dir = str(BASE_DIR / "frontend" / "static")
 
     app = Flask(
         __name__,
