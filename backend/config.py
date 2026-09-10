@@ -38,7 +38,9 @@ ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "yes2026")
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://vlxktgfdwjtzomfsqbgt.supabase.co")
 SUPABASE_PUBLISHABLE_KEY = os.environ.get("SUPABASE_PUBLISHABLE_KEY", "")
 SUPABASE_SECRET_KEY = os.environ.get("SUPABASE_SECRET_KEY", "")
-SUPABASE_KEY = SUPABASE_SECRET_KEY or SUPABASE_PUBLISHABLE_KEY
+SUPABASE_KEY = os.environ.get("SUPABASE_KEY") or SUPABASE_SECRET_KEY or SUPABASE_PUBLISHABLE_KEY or ""
+if not SUPABASE_SECRET_KEY and SUPABASE_KEY:
+    SUPABASE_SECRET_KEY = SUPABASE_KEY
 
 def normalize_database_url(url: str) -> str:
     if not url:

@@ -19,8 +19,12 @@ IS_SUPABASE = False
 pg_pool = None
 
 def init_postgres_pool(target_url=None, host=None, port=None, dbname=None, user=None, password=None, sslmode=None):
-    import psycopg2
-    from psycopg2 import pool
+    try:
+        import psycopg2
+        from psycopg2 import pool
+    except ImportError:
+        logger.info("[Database Pool] psycopg2 library not installed. Operating on Supabase Cloud REST.")
+        return None, False
 
     url = target_url or DATABASE_URL
     is_sb = False
@@ -68,8 +72,8 @@ def init_postgres_pool(target_url=None, host=None, port=None, dbname=None, user=
         raise ValueError("No database URL or PostgreSQL credentials provided.")
 
 try:
-    if DATABASE_URL or (POSTGRES_HOST and POSTGRES_PASSWORD):
-        pg_pool, IS_SUPABASE = init_postgres_pool(
+    if (DATABASE_URL and len(DATABASE_URL.strip()) > 15) or (POSTGRES_HOST and POSTGRES_PASSWORD):
+        pool_res = init_postgres_pool(
             target_url=DATABASE_URL,
             host=POSTGRES_HOST,
             port=POSTGRES_PORT,
@@ -78,8 +82,14 @@ try:
             password=POSTGRES_PASSWORD,
             sslmode=POSTGRES_SSLMODE
         )
-        USE_POSTGRES = True
-        logger.info(f"[Database Pool] Initialized connection pool for {'Supabase Cloud' if IS_SUPABASE else 'PostgreSQL'}.")
+        if pool_res and pool_res[0]:
+            pg_pool, IS_SUPABASE = pool_res
+            USE_POSTGRES = True
+            logger.info(f"[Database Pool] Initialized connection pool for {'Supabase Cloud' if IS_SUPABASE else 'PostgreSQL'}.")
+        else:
+            USE_POSTGRES = False
+            IS_SUPABASE = False
+            pg_pool = None
 except Exception as err:
     USE_POSTGRES = False
     IS_SUPABASE = False
